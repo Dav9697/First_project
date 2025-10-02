@@ -7,9 +7,10 @@ text-align: center;
 body {
 background-color:#FEFCC4;
 }
-
-button{
-height: 20px;
-width : 50px;
+header{
+height : 30px;
+width : 100%;
+background-color : #FEECC4;
+border : none;
 
 }
