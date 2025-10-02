@@ -14,5 +14,7 @@ height : 30px;
 width : 100%;
 background-color : #FEECC4;
 border : none;
+margin : none;
+position : fixed;
 
 }
