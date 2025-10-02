@@ -6,6 +6,8 @@ text-align: center;
 
 body {
 background-color:#FEFCC4;
+margin : none;
+padding : none;
 }
 header{
 height : 30px;
