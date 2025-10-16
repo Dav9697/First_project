@@ -5,14 +5,13 @@ text-align: center;
 }
 
 body {
-background-color:#FEFE10;
+background-color:#124578;
 padding:none;
 margin: 0px;
 }
 header{
 height :22px;
 width : 100%;
-background-color : #FEECC4;
 border : none;
 margin: 0px;
 position : fixed;
