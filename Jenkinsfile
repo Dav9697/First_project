@@ -18,8 +18,19 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                echo "Deploy stage triggered..."
-                sh "echo Deploy Done"
+                echo "Deploying INSIDE Jenkins container..."
+                sh '''
+                # Папка, куда будем деплоить внутри контейнера Jenkins
+                DEPLOY_DIR="/var/jenkins_home/deploy"
+
+                # Создаем директорию, если нет
+                mkdir -p $DEPLOY_DIR
+
+                # Копируем ВСЕ файлы из workspace в deploy папку
+                cp -r * $DEPLOY_DIR/
+
+                echo "Deploy done! Files copied to $DEPLOY_DIR"
+                '''
             }
         }
     }
