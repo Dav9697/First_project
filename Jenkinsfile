@@ -2,6 +2,14 @@ pipeline {
     agent any
 
     stages {
+
+        stage('Checkout') {
+            steps {
+                checkout scm
+                echo "Code successfully checked out."
+            }
+        }
+
         stage('Build') {
             steps {
                 echo "Building project..."
@@ -18,26 +26,26 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                echo "Deploying INSIDE Jenkins container..."
-                sh '''
-                # Папка, куда будем деплоить внутри контейнера Jenkins
-                DEPLOY_DIR="/var/jenkins_home/deploy"
+                script {
+                    echo "Deploying INSIDE Jenkins container..."
+                    def deployDir = "/var/jenkins_home/deploy"
 
-                # Создаем директорию, если нет
-                mkdir -p $DEPLOY_DIR
-
-                # Копируем ВСЕ файлы из workspace в deploy папку
-                cp -r * $DEPLOY_DIR/
-
-                echo "Deploy done! Files copied to $DEPLOY_DIR"
-                '''
+                    sh """
+                    mkdir -p ${deployDir}
+                    cp -r * ${deployDir}/
+                    echo "Deploy done! Files copied to ${deployDir}"
+                    """
+                }
             }
         }
     }
 
     post {
-        always {
-            echo "Pipeline finished."
+        success {
+            echo "Build and Deployment SUCCESSFUL!"
+        }
+        failure {
+            echo "Build FAILED!"
         }
     }
 }
