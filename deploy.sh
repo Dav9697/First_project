@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /home/user/DeployFolder
-git pull
+#cd /home/user/DeployFolder
+#git pull
 
 
