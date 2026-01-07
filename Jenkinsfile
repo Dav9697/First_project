@@ -1,6 +1,12 @@
 pipeline {
     agent any
 
+    environment {
+        VM_USER = 'dav'                      // пользователь на VM
+        VM_HOST = '10.10.9.96'               // IP VM
+        DEPLOY_DIR = '~/deploy'              // куда копируем файлы на VM
+    }
+
     stages {
 
         stage('Checkout') {
@@ -27,14 +33,16 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    echo "Deploying INSIDE Jenkins container..."
-                    def deployDir = "/var/jenkins_home/deploy"
-
-                    sh """
-                    mkdir -p ${deployDir}
-                    cp -r * ${deployDir}/
-                    echo "Deploy done! Files copied to ${deployDir}"
-                    """
+                    echo "Deploying to VM ${VM_HOST}..."
+                    
+                    // sshagent — использует ключ из Jenkins Credentials
+                    sshagent(['jenkins_vm_ssh_key']) {
+                        sh """
+                            ssh ${VM_USER}@${VM_HOST} 'mkdir -p ${DEPLOY_DIR}'
+                            scp -r * ${VM_USER}@${VM_HOST}:${DEPLOY_DIR}/
+                            ssh ${VM_USER}@${VM_HOST} 'echo "Deploy done!"'
+                        """
+                    }
                 }
             }
         }
